@@ -28,56 +28,56 @@ export default function InputTable() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Enter Food Item</h1>
+    <div className="min-h-screen bg-gradient-to-br from-red-400 to-black flex items-top justify-center p-4">
+      <div className="w-full bg-white rounded-xl shadow-lg p-6 space-y-6">
+        <h1 className="text-3xl font-bold text-center text-gray-800">RUEating</h1>
         <Input
           type="text"
-          placeholder="Type something..."
+          placeholder="Enter Food Item..."
           value={input}
           onChange={handleInputChange}
-          className="w-full text-lg"
+          className="w-full max-w-2xl font-bold text-x1 p-4"
         />
         {input && (
-          <Table>
+          <Table className="text-lg">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/4">Item</TableHead>
-                <TableHead className="w-1/4">Campus</TableHead>
-                <TableHead className="w-1/4">Time</TableHead>
-                <TableHead className="w-1/4">Date</TableHead>
+                <TableHead className="w-1/3 py-4">Item</TableHead>
+                <TableHead className="w-1/3 py-4">Campus</TableHead>
+                <TableHead className="w-1/3 py-4">Time</TableHead>
+                <TableHead className="w-1/3 py-4">Date</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="divide-y">
               {isLoading ? (
-                [...Array(4)].map((_, index) => (
+                [...Array(3)].map((_, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                      <Skeleton className="h-4 w-full" />
+                    <TableCell className="py-4">
+                      <Skeleton className="h-6 w-full" />
                     </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 w-full" />
+                    <TableCell className="py-4">
+                      <Skeleton className="h-6 w-full" />
                     </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 w-full" />
+                    <TableCell className="py-4">
+                      <Skeleton className="h-6 w-full" />
                     </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 w-full" />
+                    <TableCell className="py-4">
+                      <Skeleton className="h-6 w-full" />
                     </TableCell>
                   </TableRow>
                 ))
               ) : isError ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center text-red-500">
+                  <TableCell colSpan={3} className="text-center text-red-500 py-4">
                     Error fetching data
                   </TableCell>
                 </TableRow>
               ) : (
                 data?.data.map((row: string[], index: number) => (
                   <TableRow key={index}>
-                    <TableCell>{row[0]}</TableCell>
-                    <TableCell>{row[1]}</TableCell>
-                    <TableCell>{row[2]}</TableCell>
+                    <TableCell className="py-4">{row[0]}</TableCell>
+                    <TableCell className="py-4">{row[1]}</TableCell>
+                    <TableCell className="py-4">{row[2]}</TableCell>
                   </TableRow>
                 ))
               )}
