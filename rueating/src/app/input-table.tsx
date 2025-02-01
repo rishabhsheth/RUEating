@@ -1,34 +1,36 @@
 "use client"
 
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableRow, TableHeader } from "@/components/ui/table"
+import { Skeleton } from "@/components/ui/skeleton"
+
+async function fetchTableData(input: string) {
+  const response = await fetch(`/api/table-data?input=${encodeURIComponent(input)}`)
+  if (!response.ok) {
+    throw new Error("Network response was not ok")
+  }
+  return response.json()
+}
 
 export default function InputTable() {
   const [input, setInput] = useState("")
-  const [tableData, setTableData] = useState<Array<[string, string, string]>>([])
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["tableData", input],
+    queryFn: () => fetchTableData(input),
+    enabled: input.length > 0,
+  })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setInput(value)
-
-    // Generate table data based on input
-    const newData: Array<[string, string, string]> = [
-      [value, value.split("").reverse().join(""), value.length.toString()],
-      [value.toUpperCase(), value.toLowerCase(), (value.match(/[aeiou]/gi) || []).length.toString()],
-      [
-        value.slice(0, Math.floor(value.length / 2)),
-        value.slice(Math.floor(value.length / 2)),
-        value.split(" ").length.toString(),
-      ],
-    ]
-    setTableData(newData)
+    setInput(e.target.value)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Input to Table Generator</h1>
+        <h1 className="text-3xl font-bold text-center text-gray-800">Enter Food Item</h1>
         <Input
           type="text"
           placeholder="Type something..."
@@ -40,19 +42,45 @@ export default function InputTable() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/3">Column 1</TableHead>
-                <TableHead className="w-1/3">Column 2</TableHead>
-                <TableHead className="w-1/3">Column 3</TableHead>
+                <TableHead className="w-1/4">Item</TableHead>
+                <TableHead className="w-1/4">Campus</TableHead>
+                <TableHead className="w-1/4">Time</TableHead>
+                <TableHead className="w-1/4">Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{row[0]}</TableCell>
-                  <TableCell>{row[1]}</TableCell>
-                  <TableCell>{row[2]}</TableCell>
+              {isLoading ? (
+                [...Array(4)].map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : isError ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center text-red-500">
+                    Error fetching data
+                  </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                data?.data.map((row: string[], index: number) => (
+                  <TableRow key={index}>
+                    <TableCell>{row[0]}</TableCell>
+                    <TableCell>{row[1]}</TableCell>
+                    <TableCell>{row[2]}</TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         )}

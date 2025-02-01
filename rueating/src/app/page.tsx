@@ -1,5 +1,15 @@
-import InputTable from './input-table'
+"use client"
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import InputTable from "./input-table"
+
+const queryClient = new QueryClient()
 
 export default function Home() {
-  return <InputTable />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <InputTable />
+    </QueryClientProvider>
+  )
 }
+
