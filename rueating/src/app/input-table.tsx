@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, TableHeader } from "@
 import { Skeleton } from "@/components/ui/skeleton"
 
 async function fetchTableData(input: string) {
-  const response = await fetch(`/api/table-data?input=${encodeURIComponent(input)}`)
+  const response = await fetch(`/api?input=${encodeURIComponent(input)}`)
   if (!response.ok) {
     throw new Error("Network response was not ok")
   }
