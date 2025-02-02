@@ -24,14 +24,14 @@ def create_or_update_db():
 
     fooddb = {
         'Busch': {'Breakfast':[],'Lunch':[],'Dinner':[]},
-        'Livvy': {'Breakfast':[],'Lunch':[],'Dinner':[]},
+        'Livingston': {'Breakfast':[],'Lunch':[],'Dinner':[]},
         'Neilson':{'Breakfast':[],'Lunch':[],'Dinner':[]},
-        'Atrium':{'Breakfast':[],'Lunch':[],'Dinner':[]}
+        'The Atrium':{'Breakfast':[],'Lunch':[],'Dinner':[]}
     }
     diningstrs = ['Busch+Dining+Hall','Livingston+Dining+Commons','Neilson+Dining+Hall','The+Atrium']
     numstrs = ['04','03','05','13']
     mealstrs = ['Breakfast','Lunch','Dinner']
-    campuses = ['Busch','Livvy','Neilson','Atrium']
+    campuses = ['Busch','Livingston','Neilson','The Atrium']
     insert_command = 'INSERT IGNORE INTO FOOD (Name, Location, Meal, Day) VALUES (%s, %s, %s, %s)'
 
     for w in range(7): #Days Iteration
@@ -58,15 +58,15 @@ def query_db(food):
     cursor = database.cursor()
     cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*'")
     rows = cursor.fetchall()
-    for row in rows:
-        print(row)
+    return rows
 
 # print(fooddb)
 
 def main():
-    # database = create_or_update_db()
-    food = '3 chilies chipotle sauce'
-    query_db(food)
+    database = create_or_update_db()
+    # food = '3 chilies chipotle sauce'
+    # rows = query_db(food)
+    # print(rows)
 
 if __name__ == "__main__":
     main()

@@ -42,10 +42,10 @@ export default function InputTable() {
           <Table className="text-lg">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/3 py-4">Item</TableHead>
-                <TableHead className="w-1/3 py-4">Campus</TableHead>
-                <TableHead className="w-1/3 py-4">Time</TableHead>
-                <TableHead className="w-1/3 py-4">Date</TableHead>
+                <TableHead className="w-1/4 py-4">Item</TableHead>
+                <TableHead className="w-1/4 py-4">Campus</TableHead>
+                <TableHead className="w-1/4 py-4">Time</TableHead>
+                <TableHead className="w-1/4 py-4">Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="divide-y">
@@ -78,6 +78,7 @@ export default function InputTable() {
                     <TableCell className="py-4">{row[0]}</TableCell>
                     <TableCell className="py-4">{row[1]}</TableCell>
                     <TableCell className="py-4">{row[2]}</TableCell>
+                    <TableCell className="py-4">{row[3]}</TableCell>
                   </TableRow>
                 ))
               )}
