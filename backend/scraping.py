@@ -6,12 +6,12 @@ import mysql.connector
 
 def create_or_update_db():
     # Create RUEATING database if does not exist already
-    database = mysql.connector.connect(host = 'localhost', user = 'hackru_sp25', passwd = 'hackru_sp25')
+    database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25')
     cursor = database.cursor()
     cursor.execute('CREATE DATABASE IF NOT EXISTS RUEating')
 
     # Create FOOD table if does not exist already
-    database = mysql.connector.connect(host = 'localhost', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
+    database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
     cursor = database.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS FOOD (Name VARCHAR(250) NOT NULL, Location VARCHAR (20) NOT NULL, Meal VARCHAR (10) NOT NULL, Day DATE NOT NULL, PRIMARY KEY (Name, Location, Meal, Day))')
 
@@ -54,7 +54,7 @@ def query_db(food):
     # Find food item in FOOD
     if food == '':
         return
-    database = mysql.connector.connect(host = 'localhost', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
+    database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
     cursor = database.cursor()
     cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*'")
     rows = cursor.fetchall()
