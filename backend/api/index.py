@@ -23,8 +23,10 @@ def query_db(food):
     database = mysql.connector.connect(host = 'localhost', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
     cursor = database.cursor()
     # cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*' AND DAY >= '{today}' ORDER BY NAME, LOCATION, DAY, MEAL LIMIT 1000")
-    cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*' AND DAY >= '{today}' ORDER BY NAME ASC, LOCATION ASC, DAY ASC, CASE WHEN MEAL = 'Breakfast' THEN 1 WHEN Meal = 'Lunch' THEN 2 WHEN Meal = 'Dinner' THEN 3 ELSE 4 END ASC LIMIT 1000")
-    
+    # cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*' AND DAY >= '{today}' ORDER BY NAME ASC, LOCATION ASC, DAY ASC, CASE WHEN MEAL = 'Breakfast' THEN 1 WHEN Meal = 'Lunch' THEN 2 WHEN Meal = 'Dinner' THEN 3 ELSE 4 END ASC LIMIT 1000")
+    cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*' ORDER BY NAME ASC, LOCATION ASC, DAY ASC, CASE WHEN MEAL = 'Breakfast' THEN 1 WHEN Meal = 'Lunch' THEN 2 WHEN Meal = 'Dinner' THEN 3 ELSE 4 END ASC LIMIT 1000")
+
+
     rows = cursor.fetchall()
     print(rows)
 

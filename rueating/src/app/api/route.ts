@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import axios from "axios";
 
 
-async function fetchData (data: String) : Promise<String[][]> {
+async function fetchData (data: string) : Promise<string[][]> {
   try { 
     const response = await axios.post('http://localhost:5228/api/getquery', {
       food: data
