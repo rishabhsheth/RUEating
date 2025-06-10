@@ -47,9 +47,8 @@ export default function RootLayout({
       <head>
         <title>Next.js</title>
       </head>
-      <body>
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <Analytics />
       </body>
