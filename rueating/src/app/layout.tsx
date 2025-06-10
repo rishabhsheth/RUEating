@@ -20,22 +20,6 @@ export const metadata: Metadata = {
   description: "HackRU Project",
 };
 
-// export default function RootLayout({
-//   children,
-// }: Readonly<{
-//   children: React.ReactNode;
-// }>) {
-//   return (
-//     <html lang="en">
-//       <body
-//         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-//       >
-//         {children}
-//       </body>
-//     </html>
-//   );
-// }
-
 
 export default function RootLayout({
   children,
@@ -45,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Next.js</title>
+        <title>RU-Eating</title>
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
