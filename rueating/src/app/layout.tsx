@@ -45,7 +45,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Next.js</title>
+        <title>RUEating</title>
+        <meta name="google-site-verification" content="TSjj7sgNBwaYt_E56og5uvF76HNnpBTGo66e6T3AxMo" />
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
