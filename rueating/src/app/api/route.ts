@@ -1,16 +1,24 @@
 import { NextResponse } from "next/server" 
-import axios from "axios";
-
+import postgres from "postgres";
 
 async function fetchData (data: string) : Promise<string[][]> {
   try { 
-    const response = await axios.post('http://127.0.0.1:5228/api/getquery', {
-      food: data
+    // Connect to DB
+    const sql = postgres({
+      host: process.env.DB_HOST,
+      database: process.env.DB_NAME,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWD
     });
-    // console.log(response.data)
-    // return new Promise(response.data);
-    return response.data;
-  } catch (error) {
+    // Execute SELECT query
+    const response = await sql`
+      SELECT * FROM FOOD WHERE Name ILIKE ${'%' + data + '%'} ORDER BY NAME ASC, LOCATION ASC, DAY ASC, CASE WHEN MEAL = 'Breakfast' THEN 1 WHEN Meal = 'Lunch' THEN 2 WHEN Meal = 'Dinner' THEN 3 ELSE 4 END ASC LIMIT 1000
+    `
+    // Convert each row object to an array of string values
+    const rowsAsArrays: string[][] = response.map((row: any) => Object.values(row).map(String));
+    return rowsAsArrays;
+  }
+  catch (error) {
     console.error(error);
   }
   return [[]];
