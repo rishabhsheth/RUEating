@@ -15,7 +15,7 @@ async function fetchData (data: string) : Promise<string[][]> {
       SELECT * FROM FOOD WHERE Name ILIKE ${'%' + data + '%'} ORDER BY NAME ASC, LOCATION ASC, DAY ASC, CASE WHEN MEAL = 'Breakfast' THEN 1 WHEN Meal = 'Lunch' THEN 2 WHEN Meal = 'Dinner' THEN 3 ELSE 4 END ASC LIMIT 1000
     `
     // Convert each row object to an array of string values
-    const rowsAsArrays: string[][] = response.map((row: any) => Object.values(row).map(String));
+    const rowsAsArrays: string[][] = response.map((row: postgres.Row) => Object.values(row).map(String));
     return rowsAsArrays;
   }
   catch (error) {
