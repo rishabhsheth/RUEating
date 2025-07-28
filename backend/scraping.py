@@ -1,17 +1,20 @@
 from bs4 import BeautifulSoup
 import requests
 import datetime
-import mysql.connector
+import psycopg2
+import os
+from dotenv import load_dotenv
 #https://menuportal23.dining.rutgers.edu/FoodPronet/pickmenu.aspx?locationNum=13&locationName=The+Atrium&dtdate=02/01/2025&activeMeal=Lunch&sName=Rutgers+University+Dining
 
 def create_or_update_db():
-    # Create RUEATING database if does not exist already
-    database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25')
-    cursor = database.cursor()
-    cursor.execute('CREATE DATABASE IF NOT EXISTS RUEating')
-
     # Create FOOD table if does not exist already
-    database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
+    load_dotenv()
+    DB_HOST = os.getenv('DB_HOST')
+    DB_NAME = os.getenv('DB_NAME')
+    DB_USER = os.getenv('DB_USER')
+    DB_PASSWD = os.getenv('DB_PASSWD')
+    database = psycopg2.connect(host = DB_HOST, dbname = DB_NAME, user = DB_USER, password = DB_PASSWD)
+    # database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
     cursor = database.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS FOOD (Name VARCHAR(250) NOT NULL, Location VARCHAR (20) NOT NULL, Meal VARCHAR (10) NOT NULL, Day DATE NOT NULL, PRIMARY KEY (Name, Location, Meal, Day))')
 
@@ -32,7 +35,7 @@ def create_or_update_db():
     numstrs = ['04','03','05','13']
     mealstrs = ['Breakfast','Lunch','Dinner']
     campuses = ['Busch','Livingston','Neilson','The Atrium']
-    insert_command = 'INSERT IGNORE INTO FOOD (Name, Location, Meal, Day) VALUES (%s, %s, %s, %s)'
+    insert_command = 'INSERT INTO FOOD (Name, Location, Meal, Day) VALUES (%s, %s, %s, %s) ON CONFLICT (Name, Location, Meal, Day) DO NOTHING'
 
     for w in range(7): #Days Iteration
         for x in range(4): #Dining Hall Iteration
@@ -48,6 +51,8 @@ def create_or_update_db():
                         data = (label['name'], campuses[x], mealstrs[y], dates[w])
                         cursor.execute(insert_command, data)
     database.commit()
+    cursor.close()
+    database.close()
     return database
 
 def query_db(food):

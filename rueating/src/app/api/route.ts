@@ -4,7 +4,7 @@ import axios from "axios";
 
 async function fetchData (data: string) : Promise<string[][]> {
   try { 
-    const response = await axios.post('http://localhost:5228/api/getquery', {
+    const response = await axios.post('http://127.0.0.1:5228/api/getquery', {
       food: data
     });
     // console.log(response.data)
