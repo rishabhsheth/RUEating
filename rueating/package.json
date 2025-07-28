@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@segment/analytics-next": "^1.81.0",
     "@tanstack/react-query": "^5.66.0",
     "@vercel/analytics": "^1.5.0",
+    "analytics-next": "^0.3.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
