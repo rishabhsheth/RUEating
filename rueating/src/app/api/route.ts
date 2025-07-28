@@ -11,6 +11,13 @@ async function fetchData (data: string) : Promise<string[][]> {
       username: process.env.DB_USER,
       password: process.env.DB_PASSWD,
     });
+    console.log(`Connected to DB ${process.env.DB_NAME} at ${process.env.DB_HOST}:${process.env.DB_PORT} as ${process.env.DB_USER}`);
+    console.log("Environment variables:", {
+      DB_HOST: process.env.DB_HOST,
+      DB_PORT: process.env.DB_PORT,
+      DB_NAME: process.env.DB_NAME,
+      DB_USER: process.env.DB_USER,
+    });
     // Execute SELECT query
     const response = await sql`
       SELECT * FROM FOOD WHERE Name ILIKE ${'%' + data + '%'} ORDER BY NAME ASC, LOCATION ASC, DAY ASC, CASE WHEN MEAL = 'Breakfast' THEN 1 WHEN Meal = 'Lunch' THEN 2 WHEN Meal = 'Dinner' THEN 3 ELSE 4 END ASC LIMIT 1000
