@@ -10,7 +10,7 @@ const supabase = createClient(
   process.env.PUBLIC_API_KEY! // your anon/public API key
 );
 
-export async function fetchData(data: string): Promise<string[][]> {
+async function fetchData(data: string): Promise<string[][]> {
   const { data: result, error } = await supabase
     .rpc('query_food', { f: data });
 
