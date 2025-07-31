@@ -9,12 +9,12 @@ from dotenv import load_dotenv
 def create_or_update_db():
     # Create FOOD table if does not exist already
     load_dotenv()
-    DB_HOST = os.getenv('DB_HOST')
-    DB_NAME = os.getenv('DB_NAME')
-    DB_USER = os.getenv('DB_USER')
-    DB_PASSWD = os.getenv('DB_PASSWD')
-    database = psycopg2.connect(host = DB_HOST, dbname = DB_NAME, user = DB_USER, password = DB_PASSWD)
-    # database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
+    database = psycopg2.connect(
+        host = os.getenv('DB_HOST'),
+        dbname = os.getenv('DB_NAME'),
+        user = os.getenv('DB_USER'),
+        password = os.getenv('DB_PASSWD')
+    )
     cursor = database.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS FOOD (Name VARCHAR(250) NOT NULL, Location VARCHAR (20) NOT NULL, Meal VARCHAR (10) NOT NULL, Day DATE NOT NULL, PRIMARY KEY (Name, Location, Meal, Day))')
 
@@ -25,12 +25,6 @@ def create_or_update_db():
         f_date = (base + datetime.timedelta(days=x))
         dates.append(f_date)
 
-    fooddb = {
-        'Busch': {'Breakfast':[],'Lunch':[],'Dinner':[]},
-        'Livingston': {'Breakfast':[],'Lunch':[],'Dinner':[]},
-        'Neilson':{'Breakfast':[],'Lunch':[],'Dinner':[]},
-        'The Atrium':{'Breakfast':[],'Lunch':[],'Dinner':[]}
-    }
     diningstrs = ['Busch+Dining+Hall','Livingston+Dining+Commons','Neilson+Dining+Hall','The+Atrium']
     numstrs = ['04','03','05','13']
     mealstrs = ['Breakfast','Lunch','Dinner']
@@ -47,31 +41,14 @@ def create_or_update_db():
                 for fieldset in fieldsets:
                     label = fieldset.find('label')
                     if(label and label.has_attr('name')):
-                        # fooddb[campuses[x]][mealstrs[y]].append(label['name'])
                         data = (label['name'], campuses[x], mealstrs[y], dates[w])
                         cursor.execute(insert_command, data)
     database.commit()
     cursor.close()
     database.close()
-    return database
-
-def query_db(food):
-    # Find food item in FOOD
-    if food == '':
-        return
-    database = mysql.connector.connect(host = '127.0.0.1', user = 'hackru_sp25', passwd = 'hackru_sp25', database = 'RUEating')
-    cursor = database.cursor()
-    cursor.execute(f"SELECT * FROM FOOD WHERE Name REGEXP '.*{food}.*'")
-    rows = cursor.fetchall()
-    return rows
-
-# print(fooddb)
 
 def main():
-    database = create_or_update_db()
-    # food = '3 chilies chipotle sauce'
-    # rows = query_db(food)
-    # print(rows)
+    create_or_update_db()
 
 if __name__ == "__main__":
     main()

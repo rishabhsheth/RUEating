@@ -1,20 +1,27 @@
 import { NextResponse } from "next/server" 
-import axios from "axios";
+import postgres from "postgres";
+
+import { createClient } from '@supabase/supabase-js'
+// Create a single supabase client for interacting with your database
 
 
-async function fetchData (data: string) : Promise<string[][]> {
-  try { 
-    const response = await axios.post('http://127.0.0.1:5228/api/getquery', {
-      food: data
-    });
-    // console.log(response.data)
-    // return new Promise(response.data);
-    return response.data;
-  } catch (error) {
-    console.error(error);
+const supabase = createClient(
+  process.env.API_HOST!,    // https://zzrmamcywlcbpqtaaobv.supabase.co
+  process.env.PUBLIC_API_KEY! // your anon/public API key
+);
+
+async function fetchData(data: string): Promise<string[][]> {
+  const { data: result, error } = await supabase
+    .rpc('query_food', { f: data });
+
+  if (error) {
+    console.error('Supabase RPC error:', error);
+    return [[]];
   }
-  return [[]];
-};
+
+  const rowsAsArrays: string[][] = result.map((row: postgres.Row) => Object.values(row).map(String));
+  return rowsAsArrays;
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
