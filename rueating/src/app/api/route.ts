@@ -59,7 +59,7 @@ export async function GET(request: Request) {
   // .then(data => variable_data = data)
 
   const data = await fetchData(input, validatedLocations);
-  console.log(data)
+  // console.log(data)
 
   return NextResponse.json({data: data});
 
