@@ -37,7 +37,8 @@ async function fetchData(data: string, locations: string[]): Promise<string[][]>
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const input = searchParams.get("input") || ""
+  const input = searchParams.get("input") || "_"
+  console.log("Input:", input)
   const rawLocations = searchParams.get("locations") || ""
   // console.log("Input: %s, Locations: %s", input, rawLocations)
 
@@ -45,9 +46,9 @@ export async function GET(request: Request) {
 
   // console.log("Validated Locations:", validatedLocations, validatedLocations.length)
 
-  if (!input || validatedLocations.length == 0) {
-    return NextResponse.json({ error: "Input is required" }, { status: 200 })
-  }
+  // if (!input || validatedLocations.length == 0) {
+  //   return NextResponse.json({ error: "Input is required" }, { status: 200 })
+  // }
 
   // console.log(input)
   // const array = fetchData(input);
@@ -58,7 +59,7 @@ export async function GET(request: Request) {
   // .then(data => variable_data = data)
 
   const data = await fetchData(input, validatedLocations);
-  // console.log(data)
+  console.log(data)
 
   return NextResponse.json({data: data});
 

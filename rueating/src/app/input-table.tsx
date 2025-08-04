@@ -23,13 +23,13 @@ async function fetchTableData(input: string, locations: string[]) {
 export default function InputTable() {
   const [input, setInput] = useState("")
   const [selectedLocations, setSelectedLocations] = useState<string[]>(LOCATIONS)
-  const [queryInput, setQueryInput] = useState("")
-  const [queryLocations, setQueryLocations] = useState<string[]>([])
+  const [queryInput, setQueryInput] = useState("_")
+  const [queryLocations, setQueryLocations] = useState<string[]>(LOCATIONS)
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["tableData", queryInput, queryLocations],
     queryFn: () => fetchTableData(queryInput, queryLocations),
-    enabled: queryInput.length > 0,
+    enabled: true,
     refetchOnWindowFocus: false,
   })
 
@@ -91,7 +91,7 @@ export default function InputTable() {
           ))}
         </div>
 
-        {queryInput && (
+        {queryInput !== null && (
           <Table className="text-lg">
             <TableHeader>
               <TableRow>
