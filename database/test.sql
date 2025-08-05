@@ -59,11 +59,12 @@ AS $$
     FROM FOOD 
     WHERE Name ILIKE '%' || f || '%'
       AND (locations IS NULL OR Location = ANY(locations))
+      AND Day >= CURRENT_DATE
   ) sub
   ORDER BY 
+    Day ASC,
     Name ASC,
     Location ASC,
-    Day ASC,
     CASE 
       WHEN Meal = 'Breakfast' THEN 1
       WHEN Meal = 'Lunch' THEN 2

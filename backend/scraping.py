@@ -35,6 +35,7 @@ def create_or_update_db():
         for x in range(4): #Dining Hall Iteration
             for y in range(3): #Meal Iteration
                 url = 'https://menuportal23.dining.rutgers.edu/FoodPronet/pickmenu.aspx?locationNum='+numstrs[x]+'&locationName='+diningstrs[x]+'&dtdate='+dates[w].strftime('%#m/%#d/%Y')+'&activeMeal='+mealstrs[y]+'&sName=Rutgers+University+Dining'
+                print(url)
                 page = requests.get(url)
                 soup = BeautifulSoup(page.content,'html.parser')
                 fieldsets = soup.find_all('fieldset')
