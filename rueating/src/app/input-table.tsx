@@ -24,7 +24,7 @@ export default function InputTable() {
   const [input, setInput] = useState("")
   const [selectedLocations, setSelectedLocations] = useState<string[]>(LOCATIONS)
   const [queryInput, setQueryInput] = useState("")
-  const [queryLocations, setQueryLocations] = useState<string[]>(LOCATIONS)
+  const [queryLocations, setQueryLocations] = useState<string[]>([])
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["tableData", queryInput, queryLocations],
@@ -91,7 +91,7 @@ export default function InputTable() {
           ))}
         </div>
 
-        {queryInput !== null && (
+        {queryInput && (
           <Table className="text-lg">
             <TableHeader>
               <TableRow>
