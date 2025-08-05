@@ -23,7 +23,7 @@ async function fetchTableData(input: string, locations: string[]) {
 export default function InputTable() {
   const [input, setInput] = useState("")
   const [selectedLocations, setSelectedLocations] = useState<string[]>(LOCATIONS)
-  const [queryInput, setQueryInput] = useState("_")
+  const [queryInput, setQueryInput] = useState("")
   const [queryLocations, setQueryLocations] = useState<string[]>(LOCATIONS)
 
   const { data, isLoading, isError } = useQuery({
