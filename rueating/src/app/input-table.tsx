@@ -4,8 +4,9 @@ import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableRow, TableHeader } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
+import { DataGridTable } from "@/components/ui/table" // <-- import your new wrapper
+
 
 const LOCATIONS = ["Busch", "Livingston", "Neilson", "The Atrium"]
 
@@ -39,13 +40,9 @@ export default function InputTable() {
 
   const toggleLocation = (location: string) => {
     setSelectedLocations(prev => {
-      const newSelected = prev.includes(location) 
-        ? prev.filter(l => l !== location) 
+      return prev.includes(location)
+        ? prev.filter(l => l !== location)
         : [...prev, location]
-
-      // console.log("Campuses toggled:", newSelected) // <--- print statement here
-
-      return newSelected
     })
   }
 
@@ -53,6 +50,24 @@ export default function InputTable() {
     setQueryInput(input)
     setQueryLocations(selectedLocations)
   }
+
+  // Convert fetched data to MUI DataGrid format
+  const columns: GridColDef[] = [
+    { field: "item", headerName: "Item", flex: 1 },
+    { field: "campus", headerName: "Campus", flex: 1 },
+    { field: "time", headerName: "Time", flex: 1 },
+    { field: "date", headerName: "Date", flex: 1 },
+  ]
+
+  const rows: GridRowsProp = Array.isArray(data?.data)
+    ? data.data.map((row: string[], index: number) => ({
+        id: index,
+        item: row[0],
+        campus: row[1],
+        time: row[2],
+        date: row[3],
+      }))
+    : []
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-400 to-black flex items-top justify-center p-4">
@@ -65,9 +80,7 @@ export default function InputTable() {
             value={input}
             onChange={handleInputChange}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch()
-              }
+              if (e.key === "Enter") handleSearch()
             }}
             className="flex-grow font-bold text-xl p-4"
           />
@@ -92,51 +105,14 @@ export default function InputTable() {
         </div>
 
         {queryInput && (
-          <Table className="text-lg">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-1/4 py-4">Item</TableHead>
-                <TableHead className="w-1/4 py-4">Campus</TableHead>
-                <TableHead className="w-1/4 py-4">Time</TableHead>
-                <TableHead className="w-1/4 py-4">Date</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className="divide-y">
-              {isLoading ? (
-                [...Array(3)].map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-4"><Skeleton className="h-6 w-full" /></TableCell>
-                    <TableCell className="py-4"><Skeleton className="h-6 w-full" /></TableCell>
-                    <TableCell className="py-4"><Skeleton className="h-6 w-full" /></TableCell>
-                    <TableCell className="py-4"><Skeleton className="h-6 w-full" /></TableCell>
-                  </TableRow>
-                ))
-              ) : isError ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center text-red-500 py-4">
-                    Error fetching data
-                  </TableCell>
-                </TableRow>
-              ) : (
-                Array.isArray(data?.data) && data.data.length > 0 ? (
-                  data.data.map((row: string[], index: number) => (
-                    <TableRow key={index}>
-                      <TableCell className="py-4">{row[0]}</TableCell>
-                      <TableCell className="py-4">{row[1]}</TableCell>
-                      <TableCell className="py-4">{row[2]}</TableCell>
-                      <TableCell className="py-4">{row[3]}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center text-gray-500 py-4">
-                      No results found
-                    </TableCell>
-                  </TableRow>
-                )
-              )}
-            </TableBody>
-          </Table>
+          <div className="w-full h-[400px]">
+            <DataGridTable
+            rows={rows}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+          />
+          </div>
         )}
       </div>
     </div>
