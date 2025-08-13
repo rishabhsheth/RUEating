@@ -24,6 +24,8 @@ def create_or_update_db():
     for x in range(0, 7):
         f_date = (base + datetime.timedelta(days=x))
         dates.append(f_date)
+    
+    
 
     diningstrs = ['Busch+Dining+Hall','Livingston+Dining+Commons','Neilson+Dining+Hall','The+Atrium']
     numstrs = ['04','03','05','13']
