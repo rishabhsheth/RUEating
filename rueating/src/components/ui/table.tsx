@@ -16,14 +16,18 @@ export const DataGridTable: React.FC<DataGridTableProps> = ({
   checkboxSelection = false,
 }) => {
   return (
-    <div className="w-full h-[400px] overflow-auto">
+    <div className="w-full h-fit">
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={pageSize}
-        rowsPerPageOptions={[5, 10, 20]}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: pageSize, page: 0 },
+          },
+        }}
+        pageSizeOptions={[10, 15, 20]}
         checkboxSelection={checkboxSelection}
-        disableSelectionOnClick
+        disableRowSelectionOnClick
         className="bg-white [&_.MuiDataGrid-cell]:px-4 [&_.MuiDataGrid-columnHeader]:px-4"
       />
     </div>
