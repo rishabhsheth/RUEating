@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
+// import { Skeleton } from "@/components/ui/skeleton"
 import { DataGridTable } from "@/components/ui/table" // <-- import your new wrapper
 import { GridColDef, GridRowsProp } from "@mui/x-data-grid"
 
@@ -28,7 +28,7 @@ export default function InputTable() {
   const [queryInput, setQueryInput] = useState("")
   const [queryLocations, setQueryLocations] = useState<string[]>([])
 
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: ["tableData", queryInput, queryLocations],
     queryFn: () => fetchTableData(queryInput, queryLocations),
     enabled: true,
