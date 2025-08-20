@@ -17,6 +17,7 @@ def create_or_update_db():
     )
     cursor = database.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS FOOD (Name VARCHAR(250) NOT NULL, Location VARCHAR (20) NOT NULL, Meal VARCHAR (10) NOT NULL, Day DATE NOT NULL, PRIMARY KEY (Name, Location, Meal, Day))')
+    cursor.execute("DELETE FROM FOOD")
 
     base = datetime.datetime.today()
     dates = []
@@ -42,7 +43,7 @@ def create_or_update_db():
                 for fieldset in fieldsets:
                     label = fieldset.find('label')
                     if(label and label.has_attr('name')):
-                        data = (label['name'], campuses[x], mealstrs[y], dates[w])
+                        data = (label.text.strip(), campuses[x], mealstrs[y], dates[w])
                         cursor.execute(insert_command, data)
     database.commit()
     cursor.close()
