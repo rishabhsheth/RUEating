@@ -12,7 +12,7 @@ interface DataGridTableProps {
 export const DataGridTable: React.FC<DataGridTableProps> = ({
   columns,
   rows,
-  pageSize = 5,
+  pageSize = 10,
   checkboxSelection = false,
 }) => {
   return (
@@ -25,7 +25,7 @@ export const DataGridTable: React.FC<DataGridTableProps> = ({
             paginationModel: { pageSize: pageSize, page: 0 },
           },
         }}
-        pageSizeOptions={[10, 15, 20]}
+        pageSizeOptions={[10]}
         checkboxSelection={checkboxSelection}
         disableRowSelectionOnClick
         className="bg-white [&_.MuiDataGrid-cell]:px-4 [&_.MuiDataGrid-columnHeader]:px-4"
